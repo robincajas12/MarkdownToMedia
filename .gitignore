@@ -1,0 +1,26 @@
+# Dependencias
+node_modules/
+
+# Variables de entorno (contienen secretos)
+.env
+.env.*
+
+# Builds
+dist/
+compiler.js
+
+# Medios y audios generados
+generated/
+generated_audio/
+*.wav
+*.mp3
+*.webm
+*.mp4
+*.ogg
+
+# Obsidian (estado local del editor)
+.obsidian/
+
+# Sistema
+.DS_Store
+*.log
