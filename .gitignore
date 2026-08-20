@@ -18,8 +18,9 @@ generated_audio/
 *.mp4
 *.ogg
 
-# Obsidian (estado local del editor)
-.obsidian/
+!examples/*.wav
+
+
 
 # Sistema
 .DS_Store
