@@ -3,7 +3,7 @@ import Loquendo from "./lib/Loquendo.js";
 import { Optional } from "./lib/resultHandlers/Optional.js";
 import Voicevox from "./lib/Voicevox.js";
 import { FFMPEGJoinTool } from "./mediaProcessing/FFMPEGJoinTool.js";
-import { applyReplacements, Character, CharacterLine, getYMLProperties, parseMarkdown, parseMetadata, YMLProperties } from "./extract.js";
+import { applyReplacements, Character, CharacterLine, getYMLProperties, parseMarkdown, parseMetadata, replaceText, YMLProperties } from "./extract.js";
 import { LoquendoHandler } from "./handlers/LoquendoHandler.js";
 import { ParsedMarkdown } from "./handlers/ServiceHandler.js";
 import { VoiceBoxHandler } from "./handlers/VoicevoxHandler.js";
@@ -48,7 +48,7 @@ const props: YMLProperties = ymlfiles
         }),
         mainProps
     );
-        console.log(props)
+  
     await fs.mkdir(path.resolve(props.output_dir || './cache'), { recursive: true });
     const res = dialoge.map((item)=>{
         const character = props.characters?.find(c => c.name === item.name)
@@ -58,7 +58,7 @@ const props: YMLProperties = ymlfiles
         }
         const params : ParsedMarkdown = {
             character: character,
-            text : item.text,
+            text : replaceText(item.text, props.replacements),
             output_dir : props.output_dir || './cache'
         }
         return loquendoHandler.generateVoice(params)

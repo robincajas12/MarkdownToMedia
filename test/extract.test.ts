@@ -1,4 +1,13 @@
-import { extractContent, extractMetadata, extractDialogue, parseMetadata } from "../transformer/extract.js";
+import {
+  extractContent,
+  extractMetadata,
+  extractDialogue,
+  parseMetadata,
+  getYMLProperties,
+  parseMarkdown,
+  replaceText,
+  applyReplacements,
+} from "../transformer/extract.js";
 
 describe("extractMetadata", () => {
   it("extracts the frontmatter block at the top of the string", () => {
@@ -90,6 +99,81 @@ characters:
       replacements: { "ñ": "ni" },
       characters: [{ name: "Narrador", voice: "loquendo/Jorge" }],
     });
+  });
+});
+
+describe("getYMLProperties", () => {
+  it("maps metadata keys to YMLProperties", () => {
+    expect(
+      getYMLProperties({
+        output_dir: "./generated_audio",
+        output_file: "guion.wav",
+        api_url: "http://localhost:8080",
+        replacements: { "ñ": "ni" },
+        characters: [{ name: "Narrador", voice: "loquendo/Jorge", service: "koei" }],
+      })
+    ).toEqual({
+      use: undefined,
+      output_dir: "./generated_audio",
+      output_file: "guion.wav",
+      api_url: "http://localhost:8080",
+      replacements: { "ñ": "ni" },
+      characters: [{ name: "Narrador", voice: "loquendo/Jorge", service: "koei" }],
+    });
+  });
+
+  it("defaults to empty replacements and characters", () => {
+    expect(getYMLProperties({})).toEqual({
+      use: undefined,
+      output_dir: undefined,
+      output_file: undefined,
+      api_url: undefined,
+      replacements: {},
+      characters: [],
+    });
+  });
+});
+
+describe("parseMarkdown", () => {
+  it("returns metadata and dialogue from a markdown string", () => {
+    const input = `---
+output_dir: ./generated_audio
+output_file: guion.wav
+---
+@Narrador: Hola gente como estan?`;
+    expect(parseMarkdown(input)).toEqual({
+      metadata: {
+        use: undefined,
+        output_dir: "./generated_audio",
+        output_file: "guion.wav",
+        api_url: undefined,
+        replacements: {},
+        characters: [],
+      },
+      dialogue: [{ name: "Narrador", text: "Hola gente como estan?" }],
+    });
+  });
+});
+
+describe("replaceText", () => {
+  it("replaces all occurrences of each key", () => {
+    const text = "¡Áñadé oñ ñ";
+    const replacements = { ñ: "ni", "¡": "", á: "a", é: "e" };
+    expect(replaceText(text, replacements)).toBe("Ániade oni ni");
+  });
+
+  it("returns the text unchanged when no replacements are given", () => {
+    expect(replaceText("hola mundo")).toBe("hola mundo");
+  });
+});
+
+describe("applyReplacements", () => {
+  it("replaces all occurrences of each key", () => {
+    expect(applyReplacements("¡Hólá!", { "¡": "", á: "a", ó: "o" })).toBe("Hola!");
+  });
+
+  it("returns the text unchanged when replacements is empty", () => {
+    expect(applyReplacements("hola mundo", {})).toBe("hola mundo");
   });
 });
 

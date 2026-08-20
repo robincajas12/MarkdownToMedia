@@ -83,6 +83,13 @@ export function parseMarkdown(str: string): { metadata: YMLProperties; dialogue:
   };
 }
 
+export function replaceText(text: string, replacements: Record<string, unknown> = {}): string {
+  let result = text;
+  for (const [search, replace] of Object.entries(replacements)) {
+    result = result.split(search).join(String(replace));
+  }
+  return result;
+}
 export function applyReplacements(text: string, replacements: Record<string, string>): string {
   let result = text;
   for (const [search, replace] of Object.entries(replacements)) {
