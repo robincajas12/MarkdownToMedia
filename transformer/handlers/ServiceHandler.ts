@@ -23,6 +23,18 @@ export abstract class ServiceHandler implements IServiceHandler
     getNext() : ServiceHandler | undefined {
         return this.nextHandler;
     }
+    abstract getServiceName() : string
+    async generateVoiceOrNext(parsedMarkdown: ParsedMarkdown) : Promise<Optional<string>>
+    {
+        if(parsedMarkdown.character.service !== this.getServiceName())
+        {
+            const next : ServiceHandler | undefined = this.getNext()
+            if(next !== undefined) return next.generateVoice(parsedMarkdown)
+            else return Optional.empty<string>()
+            
+        }
+        return this.generateVoice(parsedMarkdown);
+    }
     abstract generateVoice(parsedMarkdown: ParsedMarkdown): Promise<Optional<string>>;
     generateHashForFileName(parsedmarkdown : ParsedMarkdown)
     {

@@ -61,7 +61,7 @@ const props: YMLProperties = ymlfiles
             text : replaceText(item.text, props.replacements),
             output_dir : props.output_dir || './cache'
         }
-        return loquendoHandler.generateVoice(params)
+        return loquendoHandler.generateVoiceOrNext(params)
     })
     const outputFiles = (await Promise.all(res)).filter((d): d is Optional<string> => typeof d !== 'function')
     const ffmpegJoinTool = new FFMPEGJoinTool();

@@ -131,6 +131,14 @@ characters:
 
 ## Usage
 
+Create a new project (`.env.template`, `config.yml`, `index.md`):
+
+```bash
+md2media init
+```
+
+Then render a script:
+
 ```bash
 md2media render -f <script.md>
 ```

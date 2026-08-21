@@ -1,0 +1,6 @@
+output_dir: ./cache
+output_file: ./result.wav
+characters:
+  - name: Narrador
+    voice: Jorge
+    service: loquendo

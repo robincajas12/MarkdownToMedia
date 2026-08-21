@@ -5,6 +5,9 @@ import { ParsedMarkdown, ServiceHandler } from "./ServiceHandler.js";
 
 export class VoiceBoxHandler extends ServiceHandler
 {
+    getServiceName(): string {
+        return 'voicevox'
+    }
     private voicevox : Voicevox;
     public constructor(voicevox : Voicevox)
     {
@@ -14,13 +17,6 @@ export class VoiceBoxHandler extends ServiceHandler
 
     async generateVoice(parsedMarkdown: ParsedMarkdown): Promise<Optional<string>> {
         console.log("ejecutando voicevox")
-        if(parsedMarkdown.character.service !== 'voicevox')
-        {
-            const next : ServiceHandler | undefined = this.getNext()
-            if(next !== undefined) return next.generateVoice(parsedMarkdown)
-            else return Optional.empty<string>()
-            
-        }
         const fileName : string = this.generateHashForFileName(parsedMarkdown) + '.wav'
         const outputFilePath :string =  path.join(path.resolve(parsedMarkdown.output_dir), fileName)
 

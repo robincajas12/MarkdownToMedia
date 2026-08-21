@@ -1,18 +1,31 @@
 {
   "name": "markdown-to-media",
   "version": "1.0.0",
-  "description": "",
+  "description": "Turn Markdown scripts into spoken audio — a dialogue-to-podcast generator.",
   "license": "ISC",
   "author": "",
+  "keywords": [
+    "markdown",
+    "audio",
+    "tts",
+    "dialogue",
+    "podcast",
+    "loquendo",
+    "voicevox"
+  ],
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch server.ts",
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json && cp -r templates dist/",
     "start": "node dist/server.js",
     "typecheck": "tsc --noEmit",
     "test": "jest",
-    "build-cli": "esbuild ."
+    "build-cli": "npm run build && npm link",
+    "prepublishOnly": "npm run build"
   },
   "bin":{
     "md2media": "dist/transformer/cli.js"
