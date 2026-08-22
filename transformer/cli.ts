@@ -72,7 +72,7 @@ program
 
         console.log("Reading:", filePath);
 
-        console.log(await transformToVideo(file.get(), path.dirname(filePath)));
+        console.log(await transformToVideo(file.get()));
     });
 
 

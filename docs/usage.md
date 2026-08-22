@@ -33,7 +33,6 @@ After that, verify it works:
 
 ```bash
 md2media --help
-md2media render --help
 ```
 
 ---
@@ -41,15 +40,17 @@ md2media render --help
 ## 3. CLI usage
 
 ```bash
-md2media render -f <path-to-markdown-file>
+md2media audio -f <path-to-markdown-file>    # generate audio only
+md2media video -f <path-to-markdown-file>    # generate video (requires <image> blocks)
 ```
 
-- `-f, --file <string>` — path to the Markdown script you want to render. Required.
+- `-f, --file <string>` — path to the Markdown script. Required.
 
 Example:
 
 ```bash
-md2media render -f index.md
+md2media audio -f index.md
+md2media video -f index.md
 ```
 
 The command:
@@ -99,9 +100,8 @@ use:
 | `use` | `string[]` | Paths to YAML config files to load and merge. See [Config YAML](#5-config-yaml). |
 | `output_dir` | `string` | Directory where the per-line WAV clips are stored (default `./cache`). |
 | `output_file` | `string` | Path of the final joined WAV (default `./result.wav`). |
-| `api_url` | `string` | (Aliases: `apiUrl`, `url`) — optional API URL. |
 | `characters` | `object[]` | List of characters. See [Characters](#52-characters). |
-| `replacements` | `object` | Text replacements (see note in [Replacements](#53-replacements)). |
+| `replacements` | `object` | Text replacements (see [Replacements](#54-replacements)). |
 
 ### 4.2 Dialogue
 
@@ -203,7 +203,22 @@ Each character is an object with:
 
 ### 5.4 Replacements
 
-> **Current limitation:** `replacements` is parsed and exposed in the config, but **it is not applied to the text** yet. The `applyReplacements()` helper exists in `transformer/extract.ts` but is not invoked during rendering. If you need accent-normalization (e.g. removing `ñ`, `á`, `é`) because your TTS engine can't handle them, it won't happen automatically today.
+The `replacements` key lets you do simple text substitutions before TTS generation. Each key is replaced with its value in all dialogue lines.
+
+Example:
+
+```yaml
+replacements:
+  "ñ": "ni"
+  "¡": ""
+  "á": "a"
+  "é": "e"
+  "í": "i"
+  "ó": "o"
+  "ú": "u"
+```
+
+> Note: replacements are simple string replacements, not regex patterns. Special regex characters (like `.`, `(`, `+`) are treated as literal strings.
 
 ---
 
@@ -263,7 +278,7 @@ Then verify with `curl http://127.0.0.1:50021/speakers`.
 
 ## 8. How it works (pipeline)
 
-For `md2media render -f index.md`:
+For `md2media audio -f index.md`:
 
 1. **Parse** — the Markdown file is split into YAML front matter (`parseMetadata`) and dialogue lines (`extractDialogue`).
 2. **Load config** — every file listed in `use:` is read, YAML-parsed, and merged over the front matter.
@@ -297,7 +312,7 @@ ls
 3. Run:
 
 ```bash
-md2media render -f index.md
+md2media audio -f index.md
 ```
 
 Expected output:
@@ -328,4 +343,4 @@ Result:
 | VOICEVOX errors / empty output | VOICEVOX server isn't running — start it and check `VOICEVOX_URL`. |
 | No final `.wav` produced | Make sure `output_dir` is set in config and `ffmpeg` is in `PATH`. |
 | Audio clips reused when text changed | The cache key is `service:voice:text`. Changing the text (or voice/service) creates a new file; deleting `cache/` forces regeneration. |
-| `replacements` have no effect | Currently not wired into the rendering pipeline (see [Replacements](#54-replacements)). |
+| `replacements` have no effect | Make sure the key names match exactly (case-sensitive). Replacements are simple string replacements, not regex.

@@ -1,6 +1,6 @@
 # Setup: the `.env` file
 
-`md2media` reads environment variables from a `.env` file located in the **current working directory** (i.e. where you run `md2media render`). The file is loaded automatically via `dotenv`.
+`md2media` reads environment variables from a `.env` file located in the **current working directory** (i.e. where you run `md2media`). The file is loaded automatically via `dotenv`.
 
 ## Minimal `.env`
 
@@ -35,7 +35,7 @@ Only set the variables for the TTS engines you actually use:
 3. Run `md2media` from the folder that contains `.env`:
 
    ```bash
-   md2media render -f index.md
+   md2media audio -f index.md
    ```
 
 ## Security

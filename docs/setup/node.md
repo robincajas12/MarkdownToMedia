@@ -39,7 +39,8 @@ This creates the `md2media` command globally. Verify:
 
 ```bash
 md2media --help
-md2media render --help
+md2media audio --help
+md2media video --help
 ```
 
 ## 5. What's next

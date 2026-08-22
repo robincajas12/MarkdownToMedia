@@ -1,15 +1,44 @@
-# dependencies
-ffmpeg
-wine (if you plan to use loquendo)
-loquendo(optional)
-voicevox(optional)
+# md2media — Manual
 
-## setting up loquendo
-In order to use loquendo you need TTSFileGenerator.exe: example for linux ｀/home/＜user>/.wine/drive_c/Program Files (x86)/Loquendo/LTTS7/bin/TTSFileGenerator.exe` 
+## Dependencies
 
+| Dependency | Required for | Notes |
+|------------|-------------|-------|
+| **Node.js** (v18+) | Running the CLI | |
+| **ffmpeg** | Joining audio/video clips | Must be in `PATH` |
+| **wine** | Loquendo TTS (optional) | Linux only |
+| **Loquendo TTS** | Loquendo voices (optional) | `TTSFileGenerator.exe` |
+| **VOICEVOX** | Voicevox voices (optional) | Running server instance |
 
-## seting up voicevox 
-run an instante of voicevox server active usually by default is http://127.0.0.1:50021
+You only need one TTS engine (Loquendo or VOICEVOX), not both.
 
+## CLI Commands
 
+```bash
+md2media init                    # Create new project files
+md2media init --force            # Overwrite existing files
+md2media audio -f <file.md>      # Generate audio from markdown
+md2media video -f <file.md>      # Generate video from markdown
+```
 
+## Quick Start
+
+```bash
+npm install
+npm run build
+npm run build-cli
+npm link
+
+md2media init                    # Creates index.md, config.yml, .env.template
+# Edit .env with your TTS paths
+md2media audio -f index.md       # Generate audio
+```
+
+## See also
+
+- [Usage guide](usage.md)
+- [Setup: Node.js](setup/node.md)
+- [Setup: ffmpeg](setup/ffmpeg.md)
+- [Setup: .env](setup/env.md)
+- [Setup: VOICEVOX](setup/voicevox.md)
+- [Setup: Loquendo](setup/loquendo.md)
