@@ -1,28 +1,21 @@
 import path from "node:path";
 import { Optional } from "../lib/resultHandlers/Optional.js";
-import { JoinTool } from "./JoinTool.js";
+import { VideoGenerator } from "./VideoGenerator.js";
 import { spawn } from "node:child_process";
 
-
-
-export class FFMPEGJoinTool implements JoinTool {
-    join(outputFile: string, audios: string[]): Promise<Optional<string>> {
-        const audioParams = audios.flatMap(audio => ["-i", audio]);
-
-        const inputs = audios
-            .map((_, index) => `[${index}:a]`)
-            .join("");
-
-        const filter = `${inputs}concat=n=${audios.length}:v=0:a=1[out]`;
-
+export class FFMPEGVideoGenerator implements VideoGenerator {
+    generate(outputFile: string, imagePath: string, audioPath: string): Promise<Optional<string>> {
         return new Promise((resolve, reject) => {
             const ffmpeg = spawn("ffmpeg", [
                 "-y",
-                ...audioParams,
-                "-filter_complex",
-                filter,
-                "-map",
-                "[out]",
+                "-loop", "1",
+                "-i", imagePath,
+                "-i", audioPath,
+                "-c:v", "libopenh264",
+                "-c:a", "aac",
+                "-b:a", "192k",
+                "-pix_fmt", "yuv420p",
+                "-shortest",
                 path.resolve(outputFile)
             ]);
 

@@ -27,7 +27,7 @@
     "build-cli": "npm run build && npm link",
     "prepublishOnly": "npm run build"
   },
-  "bin":{
+  "bin": {
     "md2media": "dist/transformer/cli.js"
   },
   "dependencies": {
@@ -37,6 +37,7 @@
     "dotenv": "^17.4.2",
     "ejs": "^6.0.1",
     "express": "^5.2.1",
+    "fast-xml-parser": "^5.11.0",
     "pg": "^8.23.0",
     "swagger-jsdoc": "^6.3.0",
     "swagger-ui-express": "^5.0.1",

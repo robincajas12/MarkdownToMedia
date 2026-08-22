@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { program } from "commander";
 import { readFile } from "./lib/fs/fslib.js";
-import { transform } from "./transformer.js";
+import {  transformToAudio, transformToVideo } from "./transformer.js";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -40,7 +40,7 @@ program
     });
 
 program
-    .command("render")
+    .command("audio")
     .option("-f, --file <string>", "Markdown file path")
     .action(async (options) => {
         const filePath = path.resolve(options.file);
@@ -54,7 +54,26 @@ program
 
         console.log("Reading:", filePath);
 
-        transform(file.get());
+        transformToAudio(file.get());
     });
+
+program
+    .command("video")
+    .option("-f, --file <string>", "Markdown file path")
+    .action(async (options) => {
+        const filePath = path.resolve(options.file);
+
+        const file = await readFile(filePath);
+
+        if (file.isEmpty()) {
+            console.error("Error: make sure the file exists");
+            return;
+        }
+
+        console.log("Reading:", filePath);
+
+        console.log(await transformToVideo(file.get(), path.dirname(filePath)));
+    });
+
 
 program.parse();

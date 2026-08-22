@@ -2,9 +2,9 @@
 
 # md2media
 
-> Turn Markdown scripts into spoken audio — a dialogue-to-podcast generator.
+> Turn Markdown scripts into spoken audio or video — a dialogue-to-podcast and video generator.
 
-**Write your podcast as a Markdown dialogue. Let TTS voices act it out. Get a single audio file.**
+**Write your podcast or video as a Markdown dialogue. Let TTS voices act it out. Get audio or video files.**
 
 [Demo](#demo) • [Examples](#examples) • [Syntax](#syntax) • [Usage](#usage) • [Install](#install) • [Docs](#docs)
 
@@ -68,6 +68,23 @@ Just another chat between friends. Each character's `service` field routes its l
   Your browser does not support the audio element.
   <a href="examples/sample_mix.wav">Download the sample</a>.
 </audio>
+
+### Video — Image + Audio
+
+Create a video from images and narration. Each `<image>` block defines a segment with a background image and dialogue:
+
+```markdown
+---
+use:
+  - ./config.yml
+---
+<image source="./cat1.jpg">
+  @Narrador: Los gatos duermen entre 12 y 16 horas al día.
+</image>
+<image source="./cat2.jpg">
+  @Narrador: Pueden rotar sus orejas 180 grados.
+</image>
+```
 
 ---
 
@@ -140,17 +157,18 @@ md2media init
 Then render a script:
 
 ```bash
-md2media render -f <script.md>
+md2media audio -f <script.md>    # generate audio only
+md2media video -f <script.md>    # generate video (requires <image> blocks)
 ```
 
 Example:
 
 ```bash
 cp examples/.env.example .env   # then edit .env with your real paths
-md2media render -f examples/index.md
+md2media audio -f examples/index.md
 ```
 
-The final audio is written to the `output_file` set in your config (default `./result.wav`), with per-line clips in `output_dir` (default `./cache`).
+The output is written to `output_file` set in your config (default `./result.wav` for audio, `./result.mp4` for video), with per-line clips in `output_dir` (default `./cache`).
 
 Per-line clips are cached by an MD5 of `service:voice:text`, so rerunning a script reuses the audio instead of re-synthesizing. Delete `cache/` to force regeneration.
 
