@@ -33,12 +33,10 @@ export async function generateVoicesForDialogue(dialogue: CharacterLine[], props
 export async function joinAudioFiles(outputFiles: Optional<string>[], props: YMLProperties) {
   const outputDir = path.resolve(props.output_dir || './cache');
   const outputPath = path.resolve(props.output_file || './result.wav');
-  
-  if (!existsSync(outputPath)) {
-    const ffmpegJoinTool = new FFMPEGJoinTool();
-    const audioFiles = outputFiles.map(item => path.join(outputDir, item.get()));
-    await ffmpegJoinTool.join(outputPath, audioFiles);
-  }
-  
+
+  const ffmpegJoinTool = new FFMPEGJoinTool();
+  const audioFiles = outputFiles.map(item => path.join(outputDir, item.get()));
+  await ffmpegJoinTool.join(outputPath, audioFiles);
+
   return outputPath;
 }

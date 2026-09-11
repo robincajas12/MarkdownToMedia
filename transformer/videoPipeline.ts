@@ -74,10 +74,8 @@ export async function generateBlockVideo(item: { sourceMedia: string; characterL
 export async function generateFinalVideo(videos: string[], outputPath: string) {
   const finalPath = path.resolve(outputPath);
 
-  if (!existsSync(finalPath)) {
-    const videoJoiner = new FFMPEGVideoJoiner();
-    await videoJoiner.join(finalPath, videos);
-  }
+  const videoJoiner = new FFMPEGVideoJoiner();
+  await videoJoiner.join(finalPath, videos);
 
   return finalPath;
 }
