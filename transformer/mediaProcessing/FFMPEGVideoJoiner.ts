@@ -24,7 +24,7 @@ export class FFMPEGVideoJoiner implements VideoJoiner {
                 path.resolve(outputFile)
             ]);
 
-       //     ffmpeg.stderr.on("data", (data) => process.stderr.write(data));
+            ffmpeg.stderr.on("data", (data) => process.stderr.write(data));
 
             ffmpeg.on("error", reject);
 

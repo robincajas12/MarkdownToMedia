@@ -23,10 +23,11 @@ export class FFMPEGJoinTool implements JoinTool {
                 filter,
                 "-map",
                 "[out]",
+                "-acodec", "pcm_s16le",
                 path.resolve(outputFile)
             ]);
 
-//            ffmpeg.stderr.on("data", (data) => process.stderr.write(data));
+           ffmpeg.stderr.on("data", (data) => process.stderr.write(data));
 
             ffmpeg.on("error", reject);
 

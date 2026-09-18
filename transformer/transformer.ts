@@ -58,7 +58,8 @@ export async function transformToVideo(markdown: string) {
 
   const blocksWithVoices = await generateVoicesForBlocks(res.blocks, props, loquendoHandler);
   const videos = await Promise.all(blocksWithVoices.map(item => generateBlockVideo(item, props)));
-  const outputPath = path.resolve(props.output_file || './result.mp4');
+  const outputFile = props.output_file || './result.mp4';
+  const outputPath = path.resolve(outputFile.replace(/\.[^.]+$/, '.mp4'));
 
   return generateFinalVideo(videos, outputPath);
 }
