@@ -21,10 +21,6 @@ The first line of [`examples/index.md`](examples/index.md), voiced by the Loquen
 @Narrador: ¿Y al final qué, fuisteis a la playa el domingo?
 ```
 
-<audio controls src="examples/sample.wav">
-  Your browser does not support the audio element.
-  <a href="examples/sample.wav">Download the sample</a>.
-</audio>
 
 ---
 
@@ -48,10 +44,6 @@ use:
 @Leonor: Yo os lo dije, mejor ver la peli en casa.
 ```
 
-<audio controls src="examples/sample_podcast.wav">
-  Your browser does not support the audio element.
-  <a href="examples/sample_podcast.wav">Download the sample</a>.
-</audio>
 
 ### Conversation with a Japanese friend — Loquendo + VOICEVOX
 
@@ -64,10 +56,7 @@ Just another chat between friends. Each character's `service` field routes its l
 @Zundamon: 私も見たよ！すごく面白かった！
 ```
 
-<audio controls src="examples/sample_mix.wav">
-  Your browser does not support the audio element.
-  <a href="examples/sample_mix.wav">Download the sample</a>.
-</audio>
+
 
 ### Video — Image + Audio
 
